@@ -1,0 +1,74 @@
+-----------------------------------------------------------------------------------------------------------
+1) creacion base del proyecto
+
+    - Creacion de proyecto Laravel 6 mediante Laragon
+    - Configurar Base de Datos en el archivo .env
+
+Corremos las migraciones:
+    - php artisan migrate
+
+*A partir de Laravel 6 no decidirá por ti con cuál pre-procesador y framework de Javascript y CSS trabajar
+en tu aplicación. Es por ello que fue movida toda la funcionalidad para el frontend (scaffolding) que
+venía por defecto (Bootstrap y Vue) en el framework a un nuevo paquete Composer oficial llamado laravel/ui
+
+    - composer require laravel/ui --dev
+    - php artisan ui bootstrap
+    - php artisan ui vue
+    - php artisan ui:auth
+
+Luego, debes instalar los paquetes NPM con:
+    - npm install
+
+A través de las instrucciones del archivo webpack.mix.js Webpack compilará tanto
+los archivos Sass para convertirlos a CSS plano así como el archivo resources/js/app.js,
+al ejecutar:
+    - npm run dev
+
+-----------------------------------------------------------------------------------------------------------
+2) creacion de los modelos
+
+- Tarea:
+
+Modelo y migracion:
+    - php artisan make:model Task --migration
+
+Se modifica la migracion agregando los atributos de Tarea y su relacion con User en el modelo.
+
+Una vez modificado la migracion:
+    - php artisan migrate:fresh
+
+-----------------------------------------------------------------------------------------------------------
+3) Seeder para pruebas
+
+    - php artisan make:factory TaskFactory
+    - php artisan make:seeder UsersTableSeeder
+    - php artisan make:seeder TasksTableSeeder
+
+*UserFactory esta creado por defecto
+
+-----------------------------------------------------------------------------------------------------------
+4) Repositories
+
+    - Crearemos la carpeta "Repositories" dentro de "app"
+
+    - Crearemos el archivo "RepositoryInterface", la cual sera una interface principal
+    - Crearemos el archivo "TaskRepositoryInterface", sera un intermediario solo en caso que queramos agregar
+        funciones propias del repositorio. Sera una interface que extiende de la otra interface
+    - Crearemos el archivo "TaskRepository". Clase que implementa la interface de Task
+
+    - Finalmente debemos registrar nuestra interface a la implementacion en nuestro "AppServiceProvider":
+
+        public function register()
+        {
+            $this->app->bind(
+                'App\Repositories\TaskRepositoryInterface',
+                'App\Repositories\TaskRepository'
+            );
+        }
+
+-----------------------------------------------------------------------------------------------------------
+5) Controllers
+
+    - php artisan make:controller TaskController --resource
+
+Modificaremos el controller para agregar el repositorio (inyecccion)
