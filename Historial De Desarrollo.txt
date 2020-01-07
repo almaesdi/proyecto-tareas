@@ -1,3 +1,43 @@
+Introduccion
+
+Crearemos un backend del tipo Hibrido, el cual soportara API (Token) y WEB (Session).
+En cuanto al backend existen 3 opciones:
+
+https://stackoverflow.com/questions/48240582/vue-js-best-way-to-implement-mpamulti-page-app-in-laravel
+
+1) SPA Api/Session
+    Use Laravel to render the "main view" + connect vue.js application.
+    Basically laravel will render the Vue application and every request goes throught an API.
+
+    a) Easy to setup
+    b) Authentication + user validation is easier (you can use laravel session manager for that - don't need to build/use
+    tokens or whatever. "No need to worry about your application state".)
+    c) Easy to "disconnect" from Laravel - if you choose in the future to decouple the SPA application.
+
+2) SPA Api/Token
+
+    Use laravel (or lumen) only as an API, and on another server render a SPA.
+    This can take more time, since you'll need to setup an extra server, prepare cross-origin, etc.
+
+    a) Also easy to setup, but can take more time than option #1
+    b) You'll need to create something for user validation/state management, etc.
+    c) Easy to place into laravel, if you decide in the future to use "only one app".
+    d) Can be easier to maintain/scale (if you have a frontend team, they don't need to worry about laravel - same
+    for your "laravel team", they "won't need to worry" about the frontend)
+
+3) MPA
+
+    You can use Laravel to render all views + vuejs for components/elements in the page.
+
+    a) Easy to setup. You have laravel + vuejs, and they are already prepared to be used together.
+    https://laravel.com/docs/5.5/frontend#writing-vue-components
+    b) Not so easy to decouple. In this case you'll need to create the same views for vue.js. This can take time.
+    c) This is the "traditional web development" (in my opinion). If I had to start a project like this today,
+    I wouldn't create all pages in Vue.js + something in Laravel (Controller + new route) to render this view.
+    If you do this (again - my opinion), it's just extra work. If you are worried about SEO, there are "fallbacks"/extra options.
+
+
+
 -----------------------------------------------------------------------------------------------------------
 1) creacion base del proyecto
 
@@ -72,3 +112,8 @@ Una vez modificado la migracion:
     - php artisan make:controller TaskController --resource
 
 Modificaremos el controller para agregar el repositorio (inyecccion)
+
+-----------------------------------------------------------------------------------------------------------
+6) Vistas
+
+
