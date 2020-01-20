@@ -11,10 +11,38 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+use Illuminate\Support\Facades\Auth;
+
+Route::get('/prueba',function(){
+    return "Hola";
 });
 
-Auth::routes();
+Route::get('/sessionStatus', function() {
+    return ['user' => Auth::user() ? Auth::user()->load('profile') : null];
+});
+
+Route::get('/', function () {
+    return view('index');
+});
+
+//Auth::routes();
+// Authentication Routes...
+//Route::get('login', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Auth\LoginController@login');
+Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+
+// Registration Routes...
+//Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');
+Route::post('register', 'Auth\RegisterController@register');
+
+// Password Reset Routes...
+Route::get('password/reset', 'Auth\ForgotPasswordController@showLinkRequestForm');
+Route::post('password/email', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+Route::get('password/reset/{token}', 'Auth\ResetPasswordController@showResetForm');
+Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('{any}', function(){
+    return view('index');
+})->where('any','.*');

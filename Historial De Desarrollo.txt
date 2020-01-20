@@ -56,16 +56,39 @@ venía por defecto (Bootstrap y Vue) en el framework a un nuevo paquete Composer
     - php artisan ui vue
     - php artisan ui:auth
 
-Luego, debes instalar los paquetes NPM con:
+Crearemos un nuevo archivo js en nuestro resources/js llamado "main.js", ya que usaremos otra forma de
+rederizar Vue.js
+*Recordar cambiar el archivo webpack.mix.js para cambiar el app.js por main.js
+
+Agregaremos el router de Vue:
+    - npm install vue-router
+
+Luego, instalamos los demas paquetes NPM con:
     - npm install
 
 A través de las instrucciones del archivo webpack.mix.js Webpack compilará tanto
-los archivos Sass para convertirlos a CSS plano así como el archivo resources/js/app.js,
+los archivos Sass para convertirlos a CSS plano así como el archivo resources/js/main.js,
 al ejecutar:
     - npm run dev
 
 -----------------------------------------------------------------------------------------------------------
-2) creacion de los modelos
+2) Vue-Router (creacion de directorios y archivos basicos)
+
+    - Iremos a la carpeta resources/js y crearemos la carpeta "router" y dentro de router crearemos
+    dos archivos: "index.js" y "routes.js".
+        - index.js: Tendra la configuracion y parametros de nuestro router. Una vez configurado, ya
+        no debiese modificarse mas.
+        - routes.js: Tendra unicamente las rutas de nuestra SPA, por lo que tendremos que modificarlo
+        activamente conforme agregemos componentes.
+
+    - Agregaremos el router al main.js (el cual contiene el componente principal del programa)
+
+3) Vuex (creacion de archivos y directorios basicos)
+
+    npm install vuex --save
+
+-----------------------------------------------------------------------------------------------------------
+4) creacion de los modelos
 
 - Tarea:
 
@@ -78,7 +101,7 @@ Una vez modificado la migracion:
     - php artisan migrate:fresh
 
 -----------------------------------------------------------------------------------------------------------
-3) Seeder para pruebas
+5) Seeder para pruebas
 
     - php artisan make:factory TaskFactory
     - php artisan make:seeder UsersTableSeeder
@@ -87,7 +110,7 @@ Una vez modificado la migracion:
 *UserFactory esta creado por defecto
 
 -----------------------------------------------------------------------------------------------------------
-4) Repositories
+6) Repositories
 
     - Crearemos la carpeta "Repositories" dentro de "app"
 
@@ -107,13 +130,63 @@ Una vez modificado la migracion:
         }
 
 -----------------------------------------------------------------------------------------------------------
-5) Controllers
+7) Controllers
 
     - php artisan make:controller TaskController --resource
 
 Modificaremos el controller para agregar el repositorio (inyecccion)
 
 -----------------------------------------------------------------------------------------------------------
-6) Vistas
+8) Rutas
+
+    - Para la creacion de un proyecto hibrido (SPA con Sesiones), las rutas seran mayoritariamente
+    por el frontend, por lo que tenemos que asignar una ruta que tome cualquier request y lo redireccione a
+    nuestra plantilla principal (que se creara en el paso 12):
+
+        Route::get('{any}', function(){
+            return view('index');
+        })->where('any','.*');
 
 
+
+-----------------------------------------------------------------------------------------------------------
+9) Mixins
+
+    - Los mixins son objetos Vue que contienen metodos comunes reutilizables por todos los componentes que lo
+    importes, por lo que haremos uno que contenga los metodos necesarios para checkear el login del usuario.
+
+    - Crearemos la carpeta "mixins" en resources/js
+
+-----------------------------------------------------------------------------------------------------------
+10) Vistas/Componentes
+
+    - Se crea la carpeta Store
+
+
+-----------------------------------------------------------------------------------------------------------
+11) Services
+
+    - Se crea las carpetas Services
+
+
+-----------------------------------------------------------------------------------------------------------
+12) Alias
+
+    - Modificacion de archivo webpack.mix.js para agregar alias principalmente hacia "components"
+    y "services"
+
+-----------------------------------------------------------------------------------------------------------
+13) Vistas/Componentes
+
+    - Se crea componente principal de la aplicacion llamado "App.vue" en la ubicacion resources/js/components
+
+    - Se crea la vista "index.blade.php" el cual contiene el componente principal (app.vue) de toda la aplicacion.
+    *Considerar que para agregar el css (entre ello el bootstrap) y todo el JS, debemos importarlos mediante laravel
+    mix (a fluent API for defining Webpack build steps for your Laravel application using several common CSS and
+    JavaScript pre-processors) a nuestra plantilla Blade principal.
+    En el caso de css debemos importar dentro del head:
+        <link rel="stylesheet" href="{{ mix('css/app.css') }}">
+    En el caso del Js debemos importar al final del body:
+        <script src="{{ mix('js/main.js') }}"></script>
+
+    -  Se crea las subcarpetas y componentes para el Header (navbar) y el footer
