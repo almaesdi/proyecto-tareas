@@ -4,8 +4,8 @@ import Dashboard from 'components/Dashboard.vue'
 import TaskDetails from 'components/Task/TaskDetails.vue'
 import ErrorNotFound from 'components/errors/NotFound.vue'*/
 import ExampleComponent from '../components/ExampleComponent.vue'
-import login from '../components/auth/login/login.vue'
-import register from '../components/auth/register/register.vue'
+import login from 'components/auth/login/login.vue'
+import register from 'components/auth/register/register.vue'
 
 export default [
     {

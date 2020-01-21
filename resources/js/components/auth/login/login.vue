@@ -2,9 +2,17 @@
     <div>
         <h2>Login</h2>
         <form @submit.prevent="loginSubmit">
-            <input type="user" placeholder="user" v-model="user">
-            <input type="password" placeholder="Password" v-model="password">
-            <button type="submit">Login</button>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" placeholder="example@example.com" v-model="email">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" placeholder="Password" v-model="password">
+            </div>
+
+            <button type="submit" class="btn btn-primary">Login</button>
         </form>
     </div>
 </template>
@@ -15,14 +23,15 @@
     export default {
         data() {
             return {
-                user: '',
-                password: ''
+                email: '',
+                password: '',
+                validationErrors: ''
             }
         },
         methods: {
             loginSubmit() {
                 console.log('Enviado login');
-                this.$store.dispatch('login',{username: this.user,password:this.password});
+                this.$store.dispatch('login',{username: this.email,password:this.password});
             }
         }
     }
