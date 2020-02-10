@@ -11,10 +11,7 @@
     </head>
 
     <body>
-        <h2>El terrible index</h2>
-
         <div id="app"></div>
-
         <script src="{{ mix('js/main.js') }}"></script>
     </body>
 </html>

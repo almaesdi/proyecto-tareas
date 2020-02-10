@@ -1,6 +1,9 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
+      <app-navbar></app-navbar>
+
       <h1>Aplicacion de Tareas</h1>
+
     <!--
       <ul class="nav nav-tabs">
         <router-link tag="li" active-class="active" exact to="/"><a>Dashboard</a></router-link>
@@ -17,7 +20,11 @@
 </template>
 
 <script>
-  export default {
+    import header from 'components/header/Navbar.vue'
 
-  }
+    export default {
+        components : {
+            'app-navbar' : header,
+        }
+    }
 </script>

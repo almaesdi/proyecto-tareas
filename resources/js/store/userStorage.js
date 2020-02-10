@@ -1,60 +1,123 @@
 import AuthService from 'services/authService.js'
 
 export default {
-
 	state: {
-        loggingIn: false,
-        loginError: null,
-        loginSuccessful: false
-	},
-	getters: {
-
-	},
+        status: '',
+        token: localStorage.getItem('token') || '',
+        user : localStorage.getItem('user') || '',
+    },
+	getters : {
+        isLoggedIn: state => !!state.user,
+        authStatus: state => state.status,
+        user: state => state.user,
+    },
 	actions: {
-        login({ dispatch, commit }, { username, password }) {
+        login({ commit, dispatch }, { username, password }) {
+            //Se inicia el request
+            commit('auth_request')
 
-            commit('loginStart');
+            return new Promise((resolve, reject) => {
+                AuthService.login(username, password)
+                    .then(response  => {
 
-            AuthService.login(username, password)
-                .then(success => {
-
-                    if(success){
-                        commit('loginStop', null)
-                    }else{
-                        commit('loginStop', "Credenciales no validas")
-                    }
-
-                })
-                .catch(error => {
-                    commit('loginStop', error.response.data.error)
-                });
+                        if(response.success){
+                            console.log(response.success);
+                            response = response.success
+                            //const token = response.data.token
+                            const user = response.data.user
+                            //localStorage.setItem('token', token)
+                            //localStorage.setItem('user', user)
+                            commit('auth_success', {'user':user})
+                            resolve(response)
+                        }else{
+                            commit('auth_error')
+                            //localStorage.removeItem('token')
+                            //localStorage.removeItem('user')
+                            reject(response)
+                        }
+                    })
+                    .catch(error => {
+                        console.log('catch error: '.error);
+                        commit('auth_error')
+                        //localStorage.removeItem('token')
+                        //localStorage.removeItem('user')
+                        reject(error)
+                    });
+            })
         },
-        register({ dispatch, commit }, { name,username, password }) {
+	    /*register({commit}, user){
+	    	return new Promise((resolve, reject) => {
+	            commit('auth_request')
+	            axios({url: 'http://localhost:3000/register', data: user, method: 'POST' })
+	            .then(resp => {
+	                const token = resp.data.token
+	                const user = resp.data.user
+	                localStorage.setItem('token', token)
+	                // Add the following line:
+	                axios.defaults.headers.common['Authorization'] = token
+	                commit('auth_success', token, user)
+	                resolve(resp)
+	            })
+	            .catch(err => {
+	                commit('auth_error', err)
+	                localStorage.removeItem('token')
+	                reject(err)
+	            })
+	        })
+	    },*/
+        logout({commit, dispatch}){
 
-            //commit('loginStart');
+            //localStorage.removeItem('token')
+            //localStorage.removeItem('user')
 
-            AuthService.register(name,username, password)
-                .then(success => {
+            return new Promise((resolve, reject) => {
+                AuthService.logout()
+                    .then(response  => {
 
-                    if(success){
-                        console.log(success);
-                    }else{
-                        console.log("error");
-                    }
-
-                })
-                .catch(error => {
-                    //commit('loginStop', error.response.data.error)
-                    console.log(error.response);
-                });
-        },
+                        if(response.success){
+                            commit('logout')
+                            resolve(response)
+                            /*response = response.success
+                            const token = response.data.token
+                            const user = response.data.user
+                            localStorage.setItem('token', token)
+                            localStorage.setItem('user', user)
+                            commit('auth_success', {'token':token,'user':user})
+                            resolve(response)*/
+                        }else{
+                            console.log(response.error);
+                            /*commit('auth_error')
+                            localStorage.removeItem('token')
+                            localStorage.removeItem('user')*/
+                            reject(response)
+                        }
+                    })
+                    .catch(error => {
+                        console.log('catch error: '.error);
+                        /*commit('auth_error')
+                        localStorage.removeItem('token')
+                        localStorage.removeItem('user')
+                        reject(error)*/
+                    });
+            })
+	  	},
     },
 	mutations: {
-        loginStart: state => state.loggingIn = true,
-        loginStop: (state, errorMessage) => {
-            state.loggingIn = false;
-            state.loginError = errorMessage;
-            state.loginSuccessful = !errorMessage;
-        }
+		auth_request(state){
+	    	state.status = 'loading'
+	  	},
+	  	auth_success(state, { user }){
+		    state.status = 'success'
+		    //state.token = token
+            state.user = user
+	  	},
+	  	auth_error(state){
+	    	state.status = 'error'
+        },
+	  	logout(state){
+            state.status = '',
+            state.user = ''
+	    	//state.token = ''
+	  	},
 	}
 }

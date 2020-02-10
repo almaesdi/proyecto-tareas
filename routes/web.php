@@ -26,10 +26,15 @@ Route::get('/', function () {
 });
 
 //Auth::routes();
+
+
+
+
+/////////////////////////////////////SESSION/////////////////////////////////////
 // Authentication Routes...
-Route::get('loginform', 'Auth\LoginController@showLoginForm')->name('login');
-Route::post('login', 'Auth\LoginController@login');
-Route::post('logout', 'Auth\LoginController@logout')->name('logout');
+//Route::get('loginform', 'Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', 'Session\Auth\LoginController@login');
+Route::post('logout', 'Session\Auth\LoginController@logout')->name('logout');
 
 // Registration Routes...
 //Route::get('register', 'Auth\RegisterController@showRegistrationForm')->name('register');

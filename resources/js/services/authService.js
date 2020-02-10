@@ -2,7 +2,8 @@ import axios from 'axios'
 
 const AuthService = {
     login,
-    register
+    register,
+    logout
 }
 
 function login(username, password) {
@@ -12,49 +13,37 @@ function login(username, password) {
     formData.set('email', username);
     formData.set('password', password);
 
+
     return axios.post("/login", formData)
         .then(
             resp => {
-                console.log(resp);
                 if(resp.data){
-                    return resp.data    //Devuelve user
+                    return resp.data
                 }
                 return null;
             })
         .catch(error => {
-            if (error.response.status == 422){
-                console.log(error.response.data.errors);
-                return error.response.data.errors;
-            }
+            //if (error.response.status == 422){
+                return error.response.data;
+            //}
         });
-    //return axios.post("/login", formData);
+}
 
+function logout() {
 
-    /*return axios.get("/login", {
-
-        email: this.username,
-        password: this.password
-    })*/
-    /*.then(
-        user => {
-            commit('loginSuccess', user);
-            router.push('/');
-        },
-        error => {
-            commit('loginFailure', error);
-            dispatch('alert/error', error, { root: true });
-        }
-    );*/
-
-    /*.then(function(response) {
-      console.log(response);
-      return response;
-    })
-    .catch(error => {
-      console.log(error);
-      return "error";
-    });*/
-
+    return axios.post("/logout")
+        .then(
+            resp => {
+                if(resp.data){
+                    return resp.data
+                }
+                return null;
+            })
+        .catch(error => {
+            //if (error.response.status == 422){
+                return error.response.data;
+            //}
+        });
 }
 
 function register(name,username, password) {
