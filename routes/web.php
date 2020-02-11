@@ -17,8 +17,10 @@ Route::get('/prueba',function(){
     return "Hola";
 });
 
-Route::get('/sessionStatus', function() {
-    return ['user' => Auth::user() ? Auth::user()->load('profile') : null];
+Route::post('/sessionStatus', function() {
+
+    return Auth::user() ? 'success' : 'error';
+    //return ['user' => Auth::user() ? Auth::user()->load('profile') : null];
 });
 
 Route::get('/', function () {

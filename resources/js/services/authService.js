@@ -1,9 +1,27 @@
 import axios from 'axios'
 
 const AuthService = {
+    getSession,
     login,
     register,
     logout
+}
+
+function getSession() {
+
+    return axios.post("/sessionStatus")
+        .then(
+            resp => {
+                if(resp.data){
+                    return resp.data
+                }
+                return null;
+            })
+        .catch(error => {
+            //if (error.response.status == 422){
+                return error.response.data;
+            //}
+        });
 }
 
 function login(username, password) {

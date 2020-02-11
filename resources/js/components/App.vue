@@ -25,6 +25,9 @@
     export default {
         components : {
             'app-navbar' : header,
-        }
+        },
+        created() {
+            this.$store.dispatch('getSession');
+        },
     }
 </script>

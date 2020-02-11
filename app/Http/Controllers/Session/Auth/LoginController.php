@@ -39,6 +39,8 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    
+
     /**OVERRIDE FUNCION QUE DEVUELVE MENSAJE DE LOGIN CORRECTO
      * The user has been authenticated.
      *
@@ -48,15 +50,12 @@ class LoginController extends Controller
      */
     protected function authenticated(Request $request, $user)
     {
-        //return response()->json(['name' => 'Abigail', 'state' => 'CA']);
-
         return response()->json([
             'success' => [
                 'status' => 200,
                 'message' => "Your Login Was Successful.",
                 'data' => [
                     'user' => $user->email,
-                    //'token' => $token
                 ]
             ]
         ], 200);

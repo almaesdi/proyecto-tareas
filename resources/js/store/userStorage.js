@@ -12,6 +12,15 @@ export default {
         user: state => state.user,
     },
 	actions: {
+        getSession({ commit, dispatch }) {
+            AuthService.getSession()
+                .then(response  => {
+                    console.log(response)
+                })
+                .catch(error => {
+                    console.log('catch '.response)
+                })
+        },
         login({ commit, dispatch }, { username, password }) {
             //Se inicia el request
             commit('auth_request')
