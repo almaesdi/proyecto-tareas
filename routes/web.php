@@ -17,11 +17,7 @@ Route::get('/prueba',function(){
     return "Hola";
 });
 
-Route::post('/sessionStatus', function() {
-
-    return Auth::user() ? 'success' : 'error';
-    //return ['user' => Auth::user() ? Auth::user()->load('profile') : null];
-});
+Route::post('/sessionStatus', 'Session\Auth\LoginController@sessionStatus');
 
 Route::get('/', function () {
     return view('index');

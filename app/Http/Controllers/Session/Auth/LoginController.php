@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -27,7 +28,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = RouteServiceProvider::HOME;
+    //protected $redirectTo = RouteServiceProvider::HOME;
 
     /**
      * Create a new controller instance.
@@ -39,7 +40,28 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    
+    protected function sessionStatus(Request $request){
+        if(Auth::check()){
+            return response()->json([
+                'success' => [
+                    'status' => 200,
+                    'message' => "Your Are Logged in the application.",
+                    'data' => [
+                        'user'=> Auth::user()->email,
+                    ]
+                ]
+            ], 200);
+        }else{
+            return response()->json([
+                'error' => [
+                    'status' => 200,
+                    'message' => "Your Are not Logged in the application.",
+                    'data' => null,
+                ]
+            ], 200);
+        }
+
+    }
 
     /**OVERRIDE FUNCION QUE DEVUELVE MENSAJE DE LOGIN CORRECTO
      * The user has been authenticated.

@@ -15,10 +15,23 @@ export default {
         getSession({ commit, dispatch }) {
             AuthService.getSession()
                 .then(response  => {
-                    console.log(response)
+                    if(response.success){
+                        response = response.success
+                        //const token = response.data.token
+                        const user = response.data.user
+                        //localStorage.setItem('token', token)
+                        //localStorage.setItem('user', user)
+                        commit('auth_success', {'user':user})
+                    }else{
+                        commit('auth_error')
+                        //localStorage.removeItem('token')
+                        //localStorage.removeItem('user')
+                    }
                 })
                 .catch(error => {
-                    console.log('catch '.response)
+                    commit('auth_error')
+                    //localStorage.removeItem('token')
+                    //localStorage.removeItem('user')
                 })
         },
         login({ commit, dispatch }, { username, password }) {

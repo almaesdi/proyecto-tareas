@@ -6742,7 +6742,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.modal-mask[data-v-605da0d4] {\r\n    position: fixed;\r\n    z-index: 9998;\r\n    top: 0;\r\n    left: 0;\r\n    width: 100%;\r\n    height: 100%;\r\n    background-color: rgba(0, 0, 0, .5);\r\n    display: table;\r\n    -webkit-transition: opacity .3s ease;\r\n    transition: opacity .3s ease;\n}\n.modal-wrapper[data-v-605da0d4] {\r\n    display: table-cell;\r\n    vertical-align: middle;\n}\n.modal-container[data-v-605da0d4] {\r\n    width: 400px;\r\n    margin: 0px auto;\r\n    padding: 20px 30px;\r\n    background-color: #fff;\r\n    border-radius: 2px;\r\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\r\n    -webkit-transition: all .3s ease;\r\n    transition: all .3s ease;\r\n    font-family: Helvetica, Arial, sans-serif;\n}\n.modal-header h3[data-v-605da0d4] {\r\n    margin-top: 0;\r\n    color: #42b983;\n}\n.modal-body[data-v-605da0d4] {\r\n    margin: 20px 0;\n}\n.modal-default-button[data-v-605da0d4] {\r\n    float: right;\n}\n.form-control[data-v-605da0d4] {\r\n\t\tmin-height: 38px;\r\n\t\tpadding-left: 5px;\r\n\t\tbox-shadow: none !important;\r\n\t\tborder-width: 0 0 1px 0;\r\n\t\tborder-radius: 0;\n}\n.form-control[data-v-605da0d4]:focus {\r\n\t\tborder-color: #ccc;\n}\n.input-group-addon[data-v-605da0d4] {\r\n\t\tmax-width: 42px;\r\n\t\ttext-align: center;\r\n\t\tbackground: none;\r\n\t\tborder-width: 0 0 1px 0;\r\n\t\tpadding-left: 5px;\r\n\t\tborder-radius: 0;\n}\r\n\r\n/*\r\n * The following styles are auto-applied to elements with\r\n * transition=\"modal\" when their visibility is toggled\r\n * by Vue.js.\r\n *\r\n * You can easily play with the modal transition by editing\r\n * these styles.\r\n */\n.modal-enter[data-v-605da0d4] {\r\n  opacity: 0;\n}\n.modal-leave-active[data-v-605da0d4] {\r\n  opacity: 0;\n}\n.modal-enter .modal-container[data-v-605da0d4],\r\n.modal-leave-active .modal-container[data-v-605da0d4] {\r\n  -webkit-transform: scale(1.1);\r\n  transform: scale(1.1);\n}\r\n", ""]);
+exports.push([module.i, "\n.modal-mask[data-v-605da0d4] {\n    position: fixed;\n    z-index: 9998;\n    top: 0;\n    left: 0;\n    width: 100%;\n    height: 100%;\n    background-color: rgba(0, 0, 0, .5);\n    display: table;\n    -webkit-transition: opacity .3s ease;\n    transition: opacity .3s ease;\n}\n.modal-wrapper[data-v-605da0d4] {\n    display: table-cell;\n    vertical-align: middle;\n}\n.modal-container[data-v-605da0d4] {\n    width: 400px;\n    margin: 0px auto;\n    padding: 20px 30px;\n    background-color: #fff;\n    border-radius: 2px;\n    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);\n    -webkit-transition: all .3s ease;\n    transition: all .3s ease;\n    font-family: Helvetica, Arial, sans-serif;\n}\n.modal-header h3[data-v-605da0d4] {\n    margin-top: 0;\n    color: #42b983;\n}\n.modal-body[data-v-605da0d4] {\n    margin: 20px 0;\n}\n.modal-default-button[data-v-605da0d4] {\n    float: right;\n}\n.form-control[data-v-605da0d4] {\n\t\tmin-height: 38px;\n\t\tpadding-left: 5px;\n\t\tbox-shadow: none !important;\n\t\tborder-width: 0 0 1px 0;\n\t\tborder-radius: 0;\n}\n.form-control[data-v-605da0d4]:focus {\n\t\tborder-color: #ccc;\n}\n.input-group-addon[data-v-605da0d4] {\n\t\tmax-width: 42px;\n\t\ttext-align: center;\n\t\tbackground: none;\n\t\tborder-width: 0 0 1px 0;\n\t\tpadding-left: 5px;\n\t\tborder-radius: 0;\n}\n\n/*\n * The following styles are auto-applied to elements with\n * transition=\"modal\" when their visibility is toggled\n * by Vue.js.\n *\n * You can easily play with the modal transition by editing\n * these styles.\n */\n.modal-enter[data-v-605da0d4] {\n  opacity: 0;\n}\n.modal-leave-active[data-v-605da0d4] {\n  opacity: 0;\n}\n.modal-enter .modal-container[data-v-605da0d4],\n.modal-leave-active .modal-container[data-v-605da0d4] {\n  -webkit-transform: scale(1.1);\n  transform: scale(1.1);\n}\n", ""]);
 
 // exports
 
@@ -55764,9 +55764,22 @@ __webpack_require__.r(__webpack_exports__);
       var commit = _ref.commit,
           dispatch = _ref.dispatch;
       services_authService_js__WEBPACK_IMPORTED_MODULE_0__["default"].getSession().then(function (response) {
-        console.log(response);
+        if (response.success) {
+          response = response.success; //const token = response.data.token
+
+          var user = response.data.user; //localStorage.setItem('token', token)
+          //localStorage.setItem('user', user)
+
+          commit('auth_success', {
+            'user': user
+          });
+        } else {
+          commit('auth_error'); //localStorage.removeItem('token')
+          //localStorage.removeItem('user')
+        }
       })["catch"](function (error) {
-        console.log('catch '.response);
+        commit('auth_error'); //localStorage.removeItem('token')
+        //localStorage.removeItem('user')
       });
     },
     login: function login(_ref2, _ref3) {
@@ -55899,8 +55912,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\laragon\www\proyecto-tareas\resources\js\main.js */"./resources/js/main.js");
-module.exports = __webpack_require__(/*! C:\laragon\www\proyecto-tareas\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\laragon\www\proyecto-tareas\resources\js\main.js */"./resources/js/main.js");
+module.exports = __webpack_require__(/*! D:\laragon\www\proyecto-tareas\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
