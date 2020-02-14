@@ -2172,13 +2172,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       username: '',
-      password: '',
-      hasErrors: null
+      password: '' //hasErrors: null,
+
     };
+  },
+  computed: {
+    hasErrors: function hasErrors() {
+      return this.$store.getters.errors;
+    },
+    loading: function loading() {
+      return this.$store.getters.authStatus;
+    }
   },
   methods: {
     login: function login() {
@@ -2191,7 +2206,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         _this.$emit('close');
       })["catch"](function (error) {
-        console.log(error);
+        password = '';
       });
     }
   }
@@ -38792,11 +38807,35 @@ var render = function() {
                         "button",
                         {
                           staticClass: "btn btn-primary btn-block btn-lg",
-                          attrs: { type: "submit" }
+                          attrs: {
+                            type: "submit",
+                            disabled: _vm.loading == "loading"
+                          }
                         },
-                        [_vm._v("Sign In")]
+                        [
+                          _vm.loading == "loading"
+                            ? [
+                                _c("span", {
+                                  staticClass:
+                                    "spinner-border spinner-border-sm",
+                                  attrs: {
+                                    role: "status",
+                                    "aria-hidden": "true"
+                                  }
+                                }),
+                                _vm._v("Loading...")
+                              ]
+                            : [_vm._v("Sign In")]
+                        ],
+                        2
                       )
-                    ])
+                    ]),
+                    _vm._v(" "),
+                    _vm.hasErrors
+                      ? _c("span", { staticClass: "error text-danger" }, [
+                          _vm._v(_vm._s(_vm.hasErrors))
+                        ])
+                      : _vm._e()
                   ]
                 )
               ])
@@ -55745,6 +55784,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: {
     status: '',
+    errors: null,
     token: localStorage.getItem('token') || '',
     user: localStorage.getItem('user') || ''
   },
@@ -55757,6 +55797,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     user: function user(state) {
       return state.user;
+    },
+    errors: function errors(state) {
+      return state.errors;
     }
   },
   actions: {
@@ -55764,6 +55807,8 @@ __webpack_require__.r(__webpack_exports__);
       var commit = _ref.commit,
           dispatch = _ref.dispatch;
       services_authService_js__WEBPACK_IMPORTED_MODULE_0__["default"].getSession().then(function (response) {
+        console.log(response);
+
         if (response.success) {
           response = response.success; //const token = response.data.token
 
@@ -55773,12 +55818,12 @@ __webpack_require__.r(__webpack_exports__);
           commit('auth_success', {
             'user': user
           });
-        } else {
-          commit('auth_error'); //localStorage.removeItem('token')
+        } else {//commit('auth_error')
+          //localStorage.removeItem('token')
           //localStorage.removeItem('user')
         }
-      })["catch"](function (error) {
-        commit('auth_error'); //localStorage.removeItem('token')
+      })["catch"](function (error) {//commit('auth_error')
+        //localStorage.removeItem('token')
         //localStorage.removeItem('user')
       });
     },
@@ -55792,7 +55837,6 @@ __webpack_require__.r(__webpack_exports__);
       return new Promise(function (resolve, reject) {
         services_authService_js__WEBPACK_IMPORTED_MODULE_0__["default"].login(username, password).then(function (response) {
           if (response.success) {
-            console.log(response.success);
             response = response.success; //const token = response.data.token
 
             var user = response.data.user; //localStorage.setItem('token', token)
@@ -55803,14 +55847,18 @@ __webpack_require__.r(__webpack_exports__);
             });
             resolve(response);
           } else {
-            commit('auth_error'); //localStorage.removeItem('token')
+            commit('auth_error', {
+              'errors': response.error
+            }); //localStorage.removeItem('token')
             //localStorage.removeItem('user')
 
             reject(response);
           }
         })["catch"](function (error) {
-          console.log('catch error: '.error);
-          commit('auth_error'); //localStorage.removeItem('token')
+          console.log('Login Catch error');
+          commit('auth_error', {
+            'errors': error
+          }); //localStorage.removeItem('token')
           //localStorage.removeItem('user')
 
           reject(error);
@@ -55875,16 +55923,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   mutations: {
     auth_request: function auth_request(state) {
+      state.errors = null;
       state.status = 'loading';
     },
     auth_success: function auth_success(state, _ref5) {
       var user = _ref5.user;
+      state.errors = null;
       state.status = 'success'; //state.token = token
 
       state.user = user;
     },
-    auth_error: function auth_error(state) {
+    auth_error: function auth_error(state, _ref6) {
+      var errors = _ref6.errors;
+      console.log(errors);
       state.status = 'error';
+      state.errors = errors.message;
     },
     logout: function logout(state) {
       state.status = '', state.user = ''; //state.token = ''
@@ -55912,8 +55965,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! D:\laragon\www\proyecto-tareas\resources\js\main.js */"./resources/js/main.js");
-module.exports = __webpack_require__(/*! D:\laragon\www\proyecto-tareas\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! C:\laragon\www\proyecto-tareas\resources\js\main.js */"./resources/js/main.js");
+module.exports = __webpack_require__(/*! C:\laragon\www\proyecto-tareas\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

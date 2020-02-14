@@ -29,9 +29,16 @@
 							<input type="password" class="form-control" name="password" placeholder="Password" required="required" v-model="password">
 						</div>
 					</div>
+
 					<div class="form-group">
-						<button type="submit" class="btn btn-primary btn-block btn-lg">Sign In</button>
+						<button type="submit" class="btn btn-primary btn-block btn-lg" :disabled="loading == 'loading'">
+                            <template v-if="loading == 'loading'"><span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Loading...</template>
+                            <template v-else>Sign In</template>
+                        </button>
 					</div>
+
+                    <span v-if="hasErrors" class="error text-danger">{{hasErrors}}</span>
+
 					<!--<p class="hint-text"><a href="#">Forgot Password?</a></p>-->
 				</form>
             </slot>
@@ -66,7 +73,15 @@ export default {
         return {
             username:'',
             password: '',
-            hasErrors: null,
+            //hasErrors: null,
+        }
+    },
+    computed:{
+        hasErrors : function(){
+            return this.$store.getters.errors
+        },
+        loading : function(){
+            return this.$store.getters.authStatus
         }
     },
     methods: {
@@ -77,7 +92,8 @@ export default {
                     this.$emit('close')
                 })
                 .catch(error => {
-                    console.log(error)
+                    password = '';
+
                 })
         }
     },

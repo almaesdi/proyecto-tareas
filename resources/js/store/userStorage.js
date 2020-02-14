@@ -3,6 +3,7 @@ import AuthService from 'services/authService.js'
 export default {
 	state: {
         status: '',
+        errors: null,
         token: localStorage.getItem('token') || '',
         user : localStorage.getItem('user') || '',
     },
@@ -10,11 +11,13 @@ export default {
         isLoggedIn: state => !!state.user,
         authStatus: state => state.status,
         user: state => state.user,
+        errors: state => state.errors,
     },
 	actions: {
         getSession({ commit, dispatch }) {
             AuthService.getSession()
                 .then(response  => {
+                    console.log(response)
                     if(response.success){
                         response = response.success
                         //const token = response.data.token
@@ -23,13 +26,13 @@ export default {
                         //localStorage.setItem('user', user)
                         commit('auth_success', {'user':user})
                     }else{
-                        commit('auth_error')
+                        //commit('auth_error')
                         //localStorage.removeItem('token')
                         //localStorage.removeItem('user')
                     }
                 })
                 .catch(error => {
-                    commit('auth_error')
+                    //commit('auth_error')
                     //localStorage.removeItem('token')
                     //localStorage.removeItem('user')
                 })
@@ -41,9 +44,7 @@ export default {
             return new Promise((resolve, reject) => {
                 AuthService.login(username, password)
                     .then(response  => {
-
                         if(response.success){
-                            console.log(response.success);
                             response = response.success
                             //const token = response.data.token
                             const user = response.data.user
@@ -52,15 +53,15 @@ export default {
                             commit('auth_success', {'user':user})
                             resolve(response)
                         }else{
-                            commit('auth_error')
+                            commit('auth_error', {'errors':response.error})
                             //localStorage.removeItem('token')
                             //localStorage.removeItem('user')
                             reject(response)
                         }
                     })
                     .catch(error => {
-                        console.log('catch error: '.error);
-                        commit('auth_error')
+                        console.log('Login Catch error');
+                        commit('auth_error',{'errors':error})
                         //localStorage.removeItem('token')
                         //localStorage.removeItem('user')
                         reject(error)
@@ -126,15 +127,19 @@ export default {
     },
 	mutations: {
 		auth_request(state){
+            state.errors = null
 	    	state.status = 'loading'
 	  	},
 	  	auth_success(state, { user }){
+            state.errors = null
 		    state.status = 'success'
 		    //state.token = token
             state.user = user
 	  	},
-	  	auth_error(state){
-	    	state.status = 'error'
+	  	auth_error(state, { errors }){
+              console.log(errors);
+            state.status = 'error'
+            state.errors = errors.message
         },
 	  	logout(state){
             state.status = '',
