@@ -5,6 +5,7 @@ import TaskDetails from 'components/Task/TaskDetails.vue'
 import ErrorNotFound from 'components/errors/NotFound.vue'*/
 import ExampleComponent from '../components/ExampleComponent.vue'
 import register from 'components/auth/register/register.vue'
+import TaskList from 'components/task/TaskList.vue'
 
 export default [
     /*{
@@ -16,10 +17,10 @@ export default [
         component: register
     },
 
-/*    {
-        path: '/logout',
-        component: Dashboard
-    },*/
+    {
+        path: '/tasks',
+        component: TaskList
+    },
 /*  {
     path: '/tasks',
     component: Tasks,

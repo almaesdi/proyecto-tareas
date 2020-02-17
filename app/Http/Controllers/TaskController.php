@@ -6,6 +6,7 @@ use App\Repositories\TaskRepositoryInterface;
 
 use Illuminate\Http\Request;
 
+use app\Task;
 
 class TaskController extends Controller
 {
@@ -24,7 +25,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        //
+        return Task::all();
     }
 
     /**

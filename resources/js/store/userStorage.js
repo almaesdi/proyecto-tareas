@@ -15,6 +15,11 @@ export default {
     },
 	actions: {
         getSession({ commit, dispatch }) {
+
+            //commit('auth_request')
+
+            commit('setLoading',true)
+
             AuthService.getSession()
                 .then(response  => {
                     console.log(response)
@@ -30,11 +35,13 @@ export default {
                         //localStorage.removeItem('token')
                         //localStorage.removeItem('user')
                     }
+                    commit('setLoading',false)
                 })
                 .catch(error => {
                     //commit('auth_error')
                     //localStorage.removeItem('token')
                     //localStorage.removeItem('user')
+                    commit('setLoading',false)
                 })
         },
         login({ commit, dispatch }, { username, password }) {
@@ -137,7 +144,7 @@ export default {
             state.user = user
 	  	},
 	  	auth_error(state, { errors }){
-              console.log(errors);
+            console.log(errors);
             state.status = 'error'
             state.errors = errors.message
         },

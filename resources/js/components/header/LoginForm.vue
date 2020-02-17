@@ -37,7 +37,9 @@
                         </button>
 					</div>
 
-                    <span v-if="hasErrors" class="error text-danger">{{hasErrors}}</span>
+                    <div class="row justify-content-center">
+                        <span v-if="errorMsg" class="error text-danger">{{errorMsg}}</span>
+                    </div>
 
 					<!--<p class="hint-text"><a href="#">Forgot Password?</a></p>-->
 				</form>
@@ -73,7 +75,7 @@ export default {
         return {
             username:'',
             password: '',
-            //hasErrors: null,
+            errorMsg: null,
         }
     },
     computed:{
@@ -92,8 +94,8 @@ export default {
                     this.$emit('close')
                 })
                 .catch(error => {
-                    password = '';
-
+                    this.errorMsg = this.$store.getters.errors;
+                    this.password = '';
                 })
         }
     },

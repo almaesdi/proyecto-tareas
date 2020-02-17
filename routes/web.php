@@ -46,6 +46,17 @@ Route::post('password/reset', 'Auth\ResetPasswordController@reset');
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+
+
+//Task controller
+Route::post('/tasks', 'TaskController@index');
+
+
+
+
+
 Route::get('{any}', function(){
     return view('index');
 })->where('any','.*');
+

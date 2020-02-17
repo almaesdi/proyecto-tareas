@@ -8,27 +8,34 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                    <router-link class="nav-link" active-class="active" to="/"><a>Home</a></router-link>
                 </li>
 
                 <template v-if="isLoggedIn">
                     <!--<li class="nav-item">
                         <a class="nav-link" href="#">Tareas</a>
                     </li>-->
+                    <li class="nav-item">
+                        <router-link class="nav-link" active-class="active" to="/tasks"><a>Tareas</a></router-link>
+                    </li>
+
+
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Tareas
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                            <a class="dropdown-item" href="#">Mis tareas</a>
-                            <a class="dropdown-item" href="#">Todas las Tareas</a>
-                        <div class="dropdown-divider"></div>
-                            <a class="dropdown-item" href="#">Something else here</a>
+                            <!--<a class="dropdown-item" href="#">Mis tareas</a>-->
+                            <router-link class="dropdown-item" active-class="active" to="/tasks"><a>Mis tareas</a></router-link>
+                            <router-link class="dropdown-item" active-class="active" to="/asd"><a>Todas las Tareas</a></router-link>
+                            <!--a class="dropdown-item" href="#">Todas las Tareas</a>-->
+                        <!--<div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="#">Something else here</a>-->
                         </div>
                     </li>
-                    <li class="nav-item">
+                    <!--<li class="nav-item">
                         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                    </li>
+                    </li>-->
                 </template>
             </ul>
 

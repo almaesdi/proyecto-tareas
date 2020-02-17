@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import login from './loginForm.vue'
+import login from './LoginForm.vue'
 
 export default {
     data (){
